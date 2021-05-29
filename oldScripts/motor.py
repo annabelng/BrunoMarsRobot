@@ -5,10 +5,6 @@
 # E-mail      : support@adeept.com
 # Author      : William
 # Date        : 2018/10/12
-# from adafruit_servokit import ServoKit
-# import board
-# import busio
-# import adafruit_pca9685
 
 import RPi.GPIO as GPIO
 import time
@@ -22,18 +18,9 @@ Motor_A_Pin1  = 8
 Motor_A_Pin2  = 10
 Motor_B_Pin1  = 13
 Motor_B_Pin2  = 12
-"""
-Motor_A_EN    = 7
-Motor_B_EN    = 0
 
-Motor_A_Pin1  = 15
-Motor_A_Pin2  = 16
-Motor_B_Pin1  = 2
-Motor_B_Pin2  = 1
-"""
-
-Dir_forward   = 0
-Dir_backward  = 1
+Dir_forward   = 1
+Dir_backward  = 0
 
 pwm_A = 0
 pwm_B = 0
@@ -42,7 +29,6 @@ def setup():#Motor initialization
 	global pwm_A, pwm_B
 	GPIO.setwarnings(False)
 	GPIO.setmode(GPIO.BOARD)
-	# GPIO.setmode(GPIO.BCM)
 	GPIO.setup(Motor_A_EN, GPIO.OUT)
 	GPIO.setup(Motor_B_EN, GPIO.OUT)
 	GPIO.setup(Motor_A_Pin1, GPIO.OUT)
@@ -106,39 +92,14 @@ def destroy():
 except KeyboardInterrupt:
 	destroy()
 
-if __name__ == '__main__':
-	setup()
-	motor_right(1,Dir_forward, )"""
+if__name__== '__main__':
+    setup()
+	motor_right(1,Dir_forward,)"""
 
 setup()
-motor_right(1, Dir_backward, 80)
-"""
-i2c = busio.I2C(board.SCL, board.SDA)
-hat = adafruit_pca9685.PCA9685(i2c)
-
-hat.frequency = 60
-"""
- 
-# Set channels to the number of servo channels on your kit.
-# 8 for FeatherWing, 16 for Shield/HAT/Bonnet.
-# kit = ServoKit(channels=16)
- 
-# kit.servo[4].angle = 180
-"""
-x = 0.55
-while (x > -0.55):
-	kit.continuous_servo[2].throttle = x
-	time.sleep(0.5)
-	x -= 0.1
-
-x = -0.55
-while (x < 0.55):
-	kit.continuous_servo[2].throttle = x
-	time.sleep(0.5)
-	x += 0.1
-	
-"""
-
-# kit.continuous_servo[2].throttle = 0.2
-time.sleep(3)
+motor_right(1,Dir_forward,50)
+time.sleep(5)
 destroy()
+
+
+
