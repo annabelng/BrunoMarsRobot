@@ -136,7 +136,7 @@ def functionSelect(command_input, response):
 		servoPosInit()
 		fuc.keepDistance()
 		RL.police()
-	
+
 	elif 'automaticOff' == command_input:
 		RL.pause()
 		fuc.pause()
@@ -206,7 +206,7 @@ def switchCtrl(command_input, response):
 		switch.switch(3,1)
 
 	elif 'Switch_3_off' in command_input:
-		switch.switch(3,0) 
+		switch.switch(3,0)
 
 
 def robotCtrl(command_input, response):
@@ -216,7 +216,7 @@ def robotCtrl(command_input, response):
 		move.motor_left(1, 0, speed_set)
 		move.motor_right(1, 0, speed_set)
 		RL.both_on()
-	
+
 	elif 'backward' == command_input:
 		direction_command = 'backward'
 		move.motor_left(1, 1, speed_set)
@@ -354,7 +354,7 @@ def update_code():
 				print('Update successfully')
 				print('Restarting...')
 				os.system('sudo reboot')
-			
+
 def wifi_check():
 	try:
 		s =socket.socket(socket.AF_INET,socket.SOCK_DGRAM)
@@ -415,7 +415,7 @@ async def recv_msg(websocket):
 	direction_command = 'no'
 	turn_command = 'no'
 
-	while True: 
+	while True:
 		response = {
 			'status' : 'ok',
 			'title' : '',
@@ -515,7 +515,7 @@ if __name__ == '__main__':
 	switch.set_all_switch_off()
 
 	HOST = ''
-	PORT = 10223                              #Define port serial 
+	PORT = 10223                              #Define port serial
 	BUFSIZ = 1024                             #Define buffer size
 	ADDR = (HOST, PORT)
 
