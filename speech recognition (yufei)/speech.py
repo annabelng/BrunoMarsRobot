@@ -35,9 +35,14 @@ def run():
     try:
         v_command = r.recognize_sphinx(audio,
         keyword_entries=[('forward',1.0),('backward',1.0),
+<<<<<<< HEAD
         ('left',1.0),('right',1.0),('stop',1.0)])
         print ("hello world")
         #You can add your own command here
+=======
+        ('left',1.0),('right',1.0),('stop',1.0)])        #You can add your own command here
+        print("hello world")
+>>>>>>> 5e660fdaa089e245d1a45d71c41d624cfe40aa2f
         print(v_command)
         RL.both_off()
         RL.cyan()
