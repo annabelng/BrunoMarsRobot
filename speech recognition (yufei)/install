@@ -1,0 +1,11 @@
+sudo apt-get install -y swig
+sudo apt-get install -y portaudio19-dev python3-all-dev python3-pyaudio
+sudo pip3 install pyaudio
+sudo apt-get install -y flac
+sudo wget https://sourceforge.net/projects/cmusphinx/files/sphinxbase/5prealpha/sphinxbase-5prealpha.tar.gz/download -O sphinxbase.tar.gz
+sudo wget https://sourceforge.net/projects/cmusphinx/files/pocketsphinx/5prealpha/pocketsphinx-5prealpha.tar.gz/download -O pocketsphinx.tar.gz
+sudo tar -xzvf sphinxbase.tar.gz
+sudo tar -xzvf pocketsphinx.tar.gz
+cd sphinxbase-5prealpha/ && ./configure -enable-fixed && make && sudo make install
+sudo pip3 install pocketsphinx
+cd pocketsphinx-5prealpha/ && ./configure && make && sudo make install
