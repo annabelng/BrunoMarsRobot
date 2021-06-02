@@ -5,11 +5,13 @@
 # E-mail      : support@adeept.com
 # Author      : William & Authors from https://github.com/Uberi/speech_recognition#readme
 # Date        : 2018/10/12
-import speech_recognition as sr
-import move
-import RPIservo
 #import robotLight
 import time
+
+import speech_recognition as sr
+
+import move
+import RPIservo
 
 scGear = RPIservo.ServoCtrl()
 scGear.moveInit()
