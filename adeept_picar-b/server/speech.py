@@ -8,7 +8,7 @@
 import speech_recognition as sr
 import move
 import RPIservo
-import robotLight
+#import robotLight
 import time
 
 scGear = RPIservo.ServoCtrl()
@@ -43,7 +43,6 @@ def run():
         v_command = r.recognize_sphinx(audio,
         keyword_entries=[('forward',1.0),('backward',1.0),
         ('left',1.0),('right',1.0),('stop',1.0)])
-        print ("hello world")
         #You can add your own command here
         print(v_command)
        # RL.both_off()
@@ -94,3 +93,6 @@ def run():
 
     else:
         pass
+ 
+ 
+run()
