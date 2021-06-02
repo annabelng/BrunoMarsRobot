@@ -96,5 +96,5 @@ def run():
     else:
         pass
  
- 
+setup()
 run()
