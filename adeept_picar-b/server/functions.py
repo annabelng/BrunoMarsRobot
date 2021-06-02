@@ -13,7 +13,7 @@ import json
 import ultra
 import Kalman_filter
 import move
-import speech
+#import speech
 import RPIservo
 
 scGear = RPIservo.ServoCtrl()
@@ -167,11 +167,11 @@ class Functions(threading.Thread):
 		self.steadyGoal = goalPos
 		self.resume()
 
-
+'''
 	def speech(self):
 		self.functionMode = 'speechRecProcessing'
 		self.resume()
-
+'''
 
 	def trackLineProcessing(self):
 		status_right = GPIO.input(line_pin_right)
@@ -250,10 +250,10 @@ class Functions(threading.Thread):
 		# pwm.set_pwm(2, 0, self.steadyGoal+pwmGenOut(xGet*10))
 		time.sleep(0.05)
 
-
+'''
 	def speechRecProcessing(self):
 		print('speechRecProcessing')
-		speech.run()
+		speech.run()'''
 
 
 	def keepDisProcessing(self):
@@ -292,13 +292,13 @@ class Functions(threading.Thread):
 
 
 if __name__ == '__main__':
-	pass
-	# fuc=Functions()
-	# fuc.radarScan()
-	# fuc.start()
-	# fuc.automatic()
-	# # fuc.steady(300)
-	# time.sleep(30)
-	# fuc.pause()
-	# time.sleep(1)
-	# move.move(80, 'no', 'no', 0.5)
+#	pass
+	bruno=Functions()
+	bruno.radarScan()
+   # bruno.start()
+	bruno.automatic()
+	fuc.steady(300)
+	time.sleep(30)
+	fuc.pause()
+	time.sleep(1)
+	move.move(80, 'no', 'no', 0.5)
