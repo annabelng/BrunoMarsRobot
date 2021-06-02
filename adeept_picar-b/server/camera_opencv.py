@@ -14,7 +14,7 @@ import imutils
 import robotLight
 import RPIservo
 
-led = robotLight.RobotLight()
+#led = robotLight.RobotLight()
 pid = PID.PID()
 pid.SetKp(0.5)
 pid.SetKd(0)
@@ -170,12 +170,12 @@ class CVThread(threading.Thread):
             # if the contour is too small, ignore it
             if cv2.contourArea(c) < 5000:
                 continue
-     
+
             # compute the bounding box for the contour, draw it on the frame,
             # and update the text
             (self.mov_x, self.mov_y, self.mov_w, self.mov_h) = cv2.boundingRect(c)
             self.drawing = 1
-            
+
             self.motionCounter += 1
             #print(motionCounter)
             #print(text)
@@ -454,7 +454,7 @@ class Camera(BaseCamera):
                     img = cvt.elementDraw(img)
                 except:
                     pass
-            
+
 
 
             # encode as a jpeg image and return it
