@@ -1,4 +1,4 @@
-import speech_recognition as sr
+import speech_recognition as sr 
 
 def recognize_speech_from_mic(recognizer, microphone):
 
@@ -36,3 +36,6 @@ def recognize_speech_from_mic(recognizer, microphone):
         response["error"] = "Unable to recognize speech"
 
     return response
+
+
+recognize_speech_from_mic(sr.Recognizer, sr.micr)

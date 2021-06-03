@@ -1,33 +1,18 @@
 import speech_recognition as sr
 
-r1 = sr.Recognizer()
-r2 = sr.Recognizer()
-r3 = sr.Recognizer()
+# obtain audio from the microphone
+r = sr.Recognizer()
+with sr.Microphone() as source:
+    print("Say something!")
+    audio = r.listen(source)
 
-#set mic as the source
-def run():
-  r = sr.Recognizer()
-  with sr.Microphone() as source:                # use the default microphone as the audio source
-    audio = r.listen(source)                   # listen for the first phrase and extract it into audio data
-
+# recognize speech using Google Speech Recognition
 try:
-    print("You said " + r.recognize(audio))    # recognize speech using Google Speech Recognition
-except LookupError:                            # speech is unintelligible
-    print("Could not understand audio")
-
-try:
-        v_command = r.recognize_sphinx(audio,
-        keyword_entries=[('forward',1.0),('backward',1.0),
-        ('left',1.0),('right',1.0),('stop',1.0)])
-        #You can add your own command here
-        print(v_command)
-       # RL.both_off()
-       # RL.cyan()
-    except sr.UnknownValueError:
-        print("say again")
-       # RL.both_off()
-       # RL.red()
-    except sr.RequestError as e:
-       # RL.both_off()
-       # RL.red()
-        pass
+    # for testing purposes, we're just using the default API key
+    # to use another API key, use `r.recognize_google(audio, key="GOOGLE_SPEECH_RECOGNITION_API_KEY")`
+    # instead of `r.recognize_google(audio)`
+    print("Google Speech Recognition thinks you said " + r.recognize_google(audio))
+except sr.UnknownValueError:
+    print("Google Speech Recognition could not understand audio")
+except sr.RequestError as e:
+    print("Could not request results from Google Speech Recognition service; {0}".format(e))
