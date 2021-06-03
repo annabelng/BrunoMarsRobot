@@ -17,27 +17,6 @@ except sr.UnknownValueError:
 except sr.RequestError as e:
     print("Could not request results from Google Speech Recognition service; {0}".format(e))
 
-def run():
-    global v_command 
-    # obtain audio from the microphone
-    try:
-        v_command = r.recognize_google(audio,
-        keyword_entries=[('forward',1.0),('backward',1.0),
-        ('left',1.0),('right',1.0),('stop',1.0)])
-        #You can add your own command here
-        print(v_command)
-       # RL.both_off()
-       # RL.cyan()
-    except sr.UnknownValueError:
-        print("say again")
-       # RL.both_off()
-       # RL.red()
-    except sr.RequestError as e:
-       # RL.both_off()
-       # RL.red()
-        pass
-
-    #print('pre')
 
 if 'forward' in v_command:
   print("moving forward")
