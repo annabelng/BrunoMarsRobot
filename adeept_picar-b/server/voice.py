@@ -27,7 +27,7 @@ if 'forward' in v_command:
   #move.motorStop()
 
 elif 'backward' in v_command:
-  print("moving back")
+  print("moving backwards")
   #scGear.moveAngle(2, 0)
   #move.motor_left(1, 1, speed_set)
   #move.motor_right(1, 1, speed_set)
