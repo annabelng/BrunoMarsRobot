@@ -31,9 +31,9 @@ def checkdist():       #Reading distance
     t2 = time.time()
     # takes in distance from 2 times
     distance = round((t2-t1)*340/2,2)*100
-    return str(distance)
+    return (distance)
 
 if __name__ == '__main__':
     while 1:
-        print("obstacle detected " + checkdist() + " cm away")
+        print("obstacle detected " + str(checkdist()) + " cm away")
         time.sleep(1)
