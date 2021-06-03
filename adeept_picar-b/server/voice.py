@@ -10,7 +10,6 @@ with sr.Microphone() as source: #using laptop mic not ROBO CAR!!
     v_command = r.recognize_google(audio)
 # recognize speech using Google Speech Recognition
 try:
-   
     print("Google Speech Recognition thinks you said " + r.recognize_google(audio))
 except sr.UnknownValueError:
     print("Google Speech Recognition could not understand audio")
