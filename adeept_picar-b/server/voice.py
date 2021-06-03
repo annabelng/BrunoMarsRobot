@@ -4,6 +4,8 @@ import speech_recognition as sr
 #move.setup()
 # obtain audio from the microphone
 r = sr.Recognizer()
+mic = sr.Microphone()
+sr.Microphone.list_microphone_names()
 with sr.Microphone() as source: #using laptop mic not ROBO CAR!!
     print("Say something!")
     audio = r.listen(source)
