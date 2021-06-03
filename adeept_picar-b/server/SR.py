@@ -48,8 +48,7 @@ def run():
         return v_command
 
 
-if 1 == 1:
-#__name__ == '__main__':
+if __name__ == '__main__':
 
     time.sleep(1)
     commandGenOut = run()
