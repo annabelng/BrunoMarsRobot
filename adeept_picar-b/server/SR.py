@@ -7,9 +7,9 @@
 # Date        : 2019/11/21
 
 import speech_recognition as sr
-import pyaudio
+#import pyaudio
 
-p = pyaudio.PyAudio()
+#p = pyaudio.PyAudio()
 # info = p.get_host_api_info_by_index(0)
 # numdevices = info.get('deviceCount')
 # for i in range(0, numdevices):
@@ -45,7 +45,8 @@ def run():
         return v_command
 
 
-if __name__ == '__main__':
+if 1 == 1:
+#__name__ == '__main__':
 
     time.sleep(1)
     commandGenOut = run()
