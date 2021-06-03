@@ -6,6 +6,8 @@ from adafruit_servokit import ServoKit
 import board
 import busio
 import adafruit_pca9685
+from ultra import *
+from move import *
 
 class Robot:
 
@@ -56,7 +58,7 @@ class Robot:
         GPIO.output(18, forwards)
 
     def stop(self):
-        self.set_direction(GPIO.LOW, GPI.LOW)
+        self.set_direction(GPIO.LOW, GPIO.LOW)
         GPIO.cleanup()
 
     def adjust_speed(self, increment):
@@ -101,7 +103,13 @@ class Robot:
         self.set_speed(speed)
        # self.set_turn(turn)
         while(True):
-            continue
+            if (checkdist() < 30):
+                print("obstacle is less than 30 cm away")
+                self.stop()
+                break
+               # continue
+            else:
+                print ("obstacle is more than 30 cm away")
 
     def run(self):
         # Staighten the wheel and start the motor. Accelerate three times and decelerate once to get to the right speed
@@ -131,71 +139,9 @@ class Robot:
                 self.straight()
                 self.set_speed(35)
 
-    '''
-    while(True):
-        right = line_right()
-        left = line_left()
-
-
-        # check line detection
-        right_detected = line_right()
-        left_detected = line_left()
-
-        # To avoid glitches, we want to see the right marker two times before acting
-        if (right_detected):
-            right_count += 1
-            print("RIGHT DETECTED")
-        else:
-
-            right_count = 0
-        if (right_count >= line_mark_count):
-            actual_right_detected = True
-        else:
-            actual_right_detected = False
-
-        # To avoid glitches, we want to see the left marker two times before acting
-        if (left_detected):
-            left_count += 1
-            print("LEFT DETECTED")
-        else:
-            left_count = 0
-        if (left_count >= line_mark_count):
-            actual_left_detected = True
-        else:
-            actual_left_detected = False
-
-        #print("l = ", left_detected, " lc = ", left_count, " al = ", actual_left_detected)
-        #print("r = ", right_detected, " rc = ", right_count, " ar = ", actual_right_detected)
-
-        if (actual_right_detected):
-            motor_right()
-            motor_right()
-            motor_right()
-            motor_right()
-            # Turn right for 1/2 second. Set the turn in motion and sleep.
-            time.sleep(0.2)
-            # Straighten the wheel and continue moving
-            motor_straight()
-        elif (actual_left_detected):
-            motor_left()
-            motor_left()
-            motor_left()
-            motor_left()
-            # Turn left for 1/2 second. Set the turn in motion and sleep.
-            time.sleep(0.2)
-            # Straighten the wheel and continue moving
-            motor_straight()
-        elif (actual_right_detected and actual_left_detected):
-            #motor_stop()
-            #break
-            pass
-        else:
-            # Keep going
-            time.sleep(0.001)
-    '''
 
 if __name__ == "__main__":
     robot = Robot()
     print('am i running')
-    robot.test(50, 0.2)
+    robot.test(40, 0.2)
     #robot.run()
