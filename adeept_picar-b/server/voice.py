@@ -1,7 +1,7 @@
 import speech_recognition as sr
 
-import move
-move.setup()
+#import move
+#move.setup()
 # obtain audio from the microphone
 r = sr.Recognizer()
 with sr.Microphone() as source: #using laptop mic not ROBO CAR!!
