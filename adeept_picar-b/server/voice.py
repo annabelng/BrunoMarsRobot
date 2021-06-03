@@ -1,11 +1,11 @@
 import speech_recognition as sr
 import time
 
-import RPIservo
+#mport RPIservo
 
 
-scGear = RPIservo.ServoCtrl()
-scGear.moveInit()
+#scGear = RPIservo.ServoCtrl()
+#scGear.moveInit()
 
 import move
 move.setup()
@@ -136,7 +136,7 @@ if __name__ == "__main__":
         # if no attempts left, the user loses the game
         if go_forwards:
             print("Going forwards")
-            scGear.moveAngle(2, 0)
+            #scGear.moveAngle(2, 0)
             move.motor_left(1, 0, 50)
             move.motor_right(1, 0, 50)
             time.sleep(2)
