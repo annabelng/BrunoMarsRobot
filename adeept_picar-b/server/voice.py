@@ -73,7 +73,7 @@ elif "right" in v_command:
   #scGear.moveAngle(2, 0)
 
 elif 'stop' in v_command:
-    move.motorStop()  
+   #move.motorStop()  
 else:
         pass
  
