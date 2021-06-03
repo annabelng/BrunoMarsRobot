@@ -45,7 +45,7 @@ def run():
             print("RE")
             pass
 
-        return v_command
+    return v_command
 
 
 if __name__ == '__main__':
