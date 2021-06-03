@@ -117,3 +117,4 @@ if __name__ == "__main__":
         else:
             print("Sorry, you lose!\nI was thinking of '{}'.".format(word))
             break
+

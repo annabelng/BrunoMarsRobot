@@ -3,8 +3,8 @@ import time
 #import move
 #move.setup()
 # obtain audio from the microphone
-r = sr.Recognizer()
-mic = sr.Microphone(device_index=2)
+#r = sr.Recognizer()
+#mic = sr.Microphone(device_index=2)
 
 def recognize_speech_from_mic(recognizer, microphone):
     """Transcribe speech from recorded from `microphone`.
@@ -53,7 +53,6 @@ def recognize_speech_from_mic(recognizer, microphone):
 
     return response
 
-recognize_speech_from_mic(r, mic)
 
 '''
 with mic as source: #using laptop mic not ROBO CAR!!
@@ -111,6 +110,10 @@ if __name__ == "__main__":
 
         # determine if guess is correct and if any attempts remain
         go_forwards = command["transcription"].lower() == "forward"
+        go_backwards = command["transcription"].lower() == "backwards"
+        go_forwards = command["transcription"].lower() == "forward"
+        go_forwards = command["transcription"].lower() == "forward"
+
         user_has_more_attempts = i < NUM_GUESSES - 1
 
         # determine if the user has won the game
@@ -119,8 +122,9 @@ if __name__ == "__main__":
         if go_forwards:
             print("Going forwards")
             break
-        elif 'backward' in v_command:
-            print("moving backwards")
+        if go_backwards:
+            print("Going backwards")
+            break
         else:
             print("Sorry, not a command")
             break
