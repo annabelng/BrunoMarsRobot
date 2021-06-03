@@ -25,12 +25,15 @@ def run():
     r = sr.Recognizer()
     with sr.Microphone(device_index =2,sample_rate=48000) as source:
         r.record(source,duration=2)
+        audio = r.listen(source)
         # #r.adjust_for_ambient_noise(source)
 
         print("Voice Command?")
         # audio = r.listen(source)
 
         try:
+            v_command = r.recognize_google(audio)
+
             v_command = r.recognize_sphinx(r.listen(source),
             keyword_entries=[('forward',1.0),('backward',1.0),
             ('left',1.0),('right',1.0),('stop',1.0)])        #You can add your own command here
