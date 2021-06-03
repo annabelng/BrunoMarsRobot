@@ -36,7 +36,7 @@ elif 'backward' in v_command:
 
 elif 'left' in v_command:
   print("moving left")
-  scGear.moveAngle(2, 45)
+ # scGear.moveAngle(2, 45)
   #move.motor_left(1, 0, speed_set)
   #move.motor_right(1, 0, speed_set)
   #time.sleep(2)
