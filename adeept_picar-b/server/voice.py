@@ -6,7 +6,7 @@ import time
 
 #scGear = RPIservo.ServoCtrl()
 #scGear.moveInit()
-
+import auto_obstacle
 import move
 move.setup()
 # obtain audio from the microphone
@@ -136,15 +136,16 @@ if __name__ == "__main__":
         # if no attempts left, the user loses the game
         if go_forwards:
             print("Going forwards")
-            scGear.moveAngle(2, 0)
-            move.motor_left(1, 0, 50)
-            move.motor_right(1, 0, 50)
+            #scGear.moveAngle(2, 0)
+            kit.continuous_servo[2].throttle = 0.2
+            move.motor_left(1, 0, 20)
+            move.motor_right(1, 0, 20)
             time.sleep(2)
             move.motorStop()
-            
+
         if go_backwards:
             print("Going backwards")
-            scGear.moveAngle(2, 0)
+            #scGear.moveAngle(2, 0)
             move.motor_left(1, 1, 50)
             move.motor_right(1, 1, 50)
             time.sleep(2)
@@ -152,14 +153,14 @@ if __name__ == "__main__":
             break
         if go_left:
             print("Going left")
-            
+
             scGear.moveAngle(2, 45)
             move.motor_left(1, 0, 50)
             move.motor_right(1, 0, 50)
             time.sleep(2)
             move.motorStop()
             scGear.moveAngle(2, 0)
-            
+
         if go_right:
             print("Going right")
             scGear.moveAngle(2,-45)
@@ -168,7 +169,7 @@ if __name__ == "__main__":
             time.sleep(2)
             move.motorStop()
             scGear.moveAngle(2, 0)
-            
+
         else:
             print("Sorry, not a command")
             break
@@ -207,5 +208,5 @@ elif "right" in v_command:
 elif 'stop' in v_command:
    #move.motorStop()  else:
    pass
- 
+
 """
