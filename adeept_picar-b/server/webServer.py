@@ -167,7 +167,6 @@ def functionSelect(command_input, response):
 	elif 'trackLineOff' == command_input:
 		fuc.pause()
 		move.motorStop()
-
 	elif 'steadyCamera' == command_input:
 		if OLED_connection:
 			screen.screen_show(5,'SteadyCamera')

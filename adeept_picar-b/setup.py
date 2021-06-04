@@ -107,9 +107,9 @@ for x in range(1,4):
 	if os.system("sudo apt-get install -y i2c-tools") == 0:
 		break
 
-for x in range(1,4):
-	if os.system("sudo pip3 install adafruit-pca9685") == 0:
-		break
+#for x in range(1,4):
+#	if os.system("sudo pip3 install adafruit-pca9685") == 0:
+#		break
 
 for x in range(1,4):
 	if os.system("sudo pip3 install rpi_ws281x") == 0:

@@ -1,17 +1,17 @@
+
 #!/usr/bin/python3
 # File name   : speech.py
-# Description : Speech Recognition
+# Description : Speech Recognition 
 # Website     : www.adeept.com
 # E-mail      : support@adeept.com
 # Author      : William & Authors from https://github.com/Uberi/speech_recognition#readme
 # Date        : 2018/10/12
+import speech_recognition as sr
+import move
+import time
+import RPIservo
 #import robotLight
 import time
-
-import speech_recognition as sr
-
-import move
-import RPIservo
 
 scGear = RPIservo.ServoCtrl()
 scGear.moveInit()
@@ -34,28 +34,27 @@ def run():
     with sr.Microphone(device_index =2,sample_rate=48000) as source:
         r.record(source,duration=2)
         #r.adjust_for_ambient_noise(source)
-       # RL.both_off()
-       # RL.yellow()
+        RL.both_off()
+        RL.yellow()
         print("Command?")
         audio = r.listen(source)
-       # RL.both_off()
-       # RL.blue()
+        RL.both_off()
+        RL.blue()
 
     try:
         v_command = r.recognize_sphinx(audio,
         keyword_entries=[('forward',1.0),('backward',1.0),
-        ('left',1.0),('right',1.0),('stop',1.0)])
-        #You can add your own command here
+        ('left',1.0),('right',1.0),('stop',1.0)])        #You can add your own command here
         print(v_command)
-       # RL.both_off()
-       # RL.cyan()
+        RL.both_off()
+        RL.cyan()
     except sr.UnknownValueError:
         print("say again")
-       # RL.both_off()
-       # RL.red()
+        RL.both_off()
+        RL.red()
     except sr.RequestError as e:
-       # RL.both_off()
-       # RL.red()
+        RL.both_off()
+        RL.red()
         pass
 
     #print('pre')
@@ -95,6 +94,3 @@ def run():
 
     else:
         pass
- 
-setup()
-run()
