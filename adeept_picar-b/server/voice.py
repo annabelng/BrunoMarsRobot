@@ -136,15 +136,15 @@ if __name__ == "__main__":
         # if no attempts left, the user loses the game
         if go_forwards:
             print("Going forwards")
-            #scGear.moveAngle(2, 0)
+            scGear.moveAngle(2, 0)
             move.motor_left(1, 0, 50)
             move.motor_right(1, 0, 50)
             time.sleep(2)
             move.motorStop()
-            break
+            
         if go_backwards:
             print("Going backwards")
-            #scGear.moveAngle(2, 0)
+            scGear.moveAngle(2, 0)
             move.motor_left(1, 1, 50)
             move.motor_right(1, 1, 50)
             time.sleep(2)
@@ -153,11 +153,22 @@ if __name__ == "__main__":
         if go_left:
             print("Going left")
             
-            break
+            scGear.moveAngle(2, 45)
+            move.motor_left(1, 0, 50)
+            move.motor_right(1, 0, 50)
+            time.sleep(2)
+            move.motorStop()
+            scGear.moveAngle(2, 0)
+            
         if go_right:
             print("Going right")
-        
-            break
+            scGear.moveAngle(2,-45)
+            move.motor_left(1, 0, 50)
+            move.motor_right(1, 0, 50)
+            time.sleep(2)
+            move.motorStop()
+            scGear.moveAngle(2, 0)
+            
         else:
             print("Sorry, not a command")
             break
