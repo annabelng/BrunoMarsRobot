@@ -168,16 +168,11 @@ class Functions(threading.Thread):
 		self.resume()
 
 '''
-	def speech(self):
-		self.functionMode = 'speechRecProcessing'
-		self.resume()
-'''
-
-	def trackLineProcessing(self):
+   def trackLineProcessing(self):
 		status_right = GPIO.input(line_pin_right)
 		status_middle = GPIO.input(line_pin_middle)
 		status_left = GPIO.input(line_pin_left)
-		#print('R%d   M%d   L%d'%(status_right,status_middle,status_left))
+		print('R%d   M%d   L%d'%(status_right,status_middle,status_left))
 		if status_middle == 0:
 			move.motor_left(1, 0, 80)
 			move.motor_right(1, 0, 80)
@@ -193,11 +188,10 @@ class Functions(threading.Thread):
 			move.motor_left(1, 1, 80)
 			move.motor_right(1, 1, 80)
 		print(status_left,status_middle,status_right)
-		time.sleep(0.1)
+		time.sleep(0.1)'''
 
-
-	def automaticProcessing(self):
-		print('automaticProcessing')
+    def automaticProcessing(self):
+        print('automaticProcessing')
 
 		scGear.moveAngle(2, 0)
 		if self.scanPos == 1:
