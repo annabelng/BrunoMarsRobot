@@ -12,6 +12,7 @@ import speech_recognition as sr
 
 import move
 import RPIservo
+import scGear
 
 scGear = RPIservo.ServoCtrl()
 scGear.moveInit()

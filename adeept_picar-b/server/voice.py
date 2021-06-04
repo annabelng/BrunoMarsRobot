@@ -1,7 +1,7 @@
 import speech_recognition as sr
 import time
 
-#mport RPIservo
+#import RPIservo
 
 
 #scGear = RPIservo.ServoCtrl()
@@ -144,7 +144,11 @@ if __name__ == "__main__":
             break
         if go_backwards:
             print("Going backwards")
-            
+            #scGear.moveAngle(2, 0)
+            move.motor_left(1, 1, 50)
+            move.motor_right(1, 1, 50)
+            time.sleep(2)
+            move.motorStop()
             break
         if go_left:
             print("Going left")
@@ -159,8 +163,6 @@ if __name__ == "__main__":
             break
 
 
-
-
 """"
 if 'forward' in v_command:
   print("moving forward")
@@ -172,11 +174,7 @@ if 'forward' in v_command:
 
 elif 'backward' in v_command:
   print("moving backwards")
-  #scGear.moveAngle(2, 0)
-  #move.motor_left(1, 1, speed_set)
-  #move.motor_right(1, 1, speed_set)
-  #time.sleep(2)
-  #move.motorStop()
+
 
 elif 'left' in v_command:
   print("moving left")
