@@ -42,11 +42,11 @@ class Robot:
         # servo for controlling horizontal rotation of ultrasonic sensor
         self.servoPort = 1
         # middle position of servo
-        self.servoMiddle = 330
+        self.servoMiddle = 200
         # left position of servo
-        self.servoLeft = 180
+        self.servoLeft = 100
         # right position of servo
-        self.servoRight = 480
+        self.servoRight = 300
 
         # range of cm before robot turns or stops
         self.range = 30
@@ -61,7 +61,7 @@ class Robot:
         self.scanList = [0,0,0]
 
         # distance in cm before robot turns
-        self.rangeKeep = 30
+        self.rangeKeep = 15
 
         self.pwm_B = GPIO.PWM(17, 1000)
         self.kit = ServoKit(channels=16)
@@ -164,7 +164,7 @@ class Robot:
 
             # rotate head to right and check distance
             elif self.scanPos == 3:
-                self.pwm_set_pwm(self.servoPort, 0,self.servoRight)
+                self.pwm.set_pwm(self.servoPort, 0,self.servoRight)
                 time.sleep(0.3)
                 self.scanList[2] = checkdist()
 
@@ -193,14 +193,14 @@ class Robot:
             # check if shortest distance is on left
             if min_index == 0:
                 # turn right
-                self.adjust_turn(0.2)
+                self.adjust_turn(0.3)
                 self.adjust_speed(0.1)
                 print("turn right")
 
             # shortest distance on right
             elif min_index == 2:
                 # turn left
-                self.adjust_turn(-0.2)
+                self.adjust_turn(-0.3)
                 self.adjust_speed(0.1)
                 print("turn left")
 
@@ -209,22 +209,23 @@ class Robot:
             else:
                 if left > right:
                     # turn right
-                    self.adjust_turn(0.2)
+                    self.adjust_turn(0.3)
                     self.adjust_speed(0.1)
                     print("turn right")
                 else:
-                    self.adjust_turn(-0.2)
+                    self.adjust_turn(-0.3)
                     self.adjust_speed(0.1)
                     print("turn left")
             if max_dist < self.rangeKeep:
                 # reverse robot
+                self.stop()
                 self.set_direction(GPIO.HIGH, GPIO.LOW)
                 self.set_speed(30)
                 print("reverse")
         else:
             # no obstacle so go forward
             self.straight()
-            self.set_speed(35)
+            self.set_speed(50)
             print("forward")
 
 
@@ -261,5 +262,5 @@ class Robot:
 if __name__ == "__main__":
     robot = Robot()
     print('am i running')
-    robot.run_obstacle(40)
+    robot.run_obstacle(50)
     #robot.run()
