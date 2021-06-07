@@ -155,8 +155,8 @@ if __name__ == "__main__":
             #break
         if go_left:
             print("Going left")
-
-            scGear.moveAngle(2, 45)
+            kit.continuous_servo[2].throttle = 0.4
+            #scGear.moveAngle(2, 45)
             move.motor_left(1, 0, 50)
             move.motor_right(1, 0, 50)
             time.sleep(2)
