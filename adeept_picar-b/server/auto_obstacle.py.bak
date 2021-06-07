@@ -8,7 +8,6 @@ import busio
 import adafruit_pca9685
 from ultra import *
 from move import *
-import Adafruit_PCA9685
 
 class Robot:
 
@@ -19,10 +18,6 @@ class Robot:
         self.i2c = busio.I2C(board.SCL, board.SDA)
         self.hat = adafruit_pca9685.PCA9685(self.i2c)
         self.hat.frequency = 60
-
-        # initiate pwm
-        pwm = Adafruit_PCA9685.PCA9685()
-        pwm.set_pwm_freq(50)
 
         # line pin right
         GPIO.setup(20,GPIO.IN)
@@ -124,7 +119,7 @@ class Robot:
 
     def test(self, speed, turn):
         self.straight()
-        self.set_speed(40)
+        self.set_speed(50)
         time.sleep(0.2)
         self.set_speed(speed)
        # self.set_turn(turn)
@@ -137,27 +132,18 @@ class Robot:
             else:
                 print ("obstacle is more than 30 cm away")
 
-    def run_obstacle(self,speed):
-        self.straight()
-        self.set_speed(speed)
-        self.avoid_obstacle()
 
     def avoid_obstacle(self):
-        while (True):
+        while true:
             print('automatic obstacle avoidance')
-            # rotate head to left and check distance
             if self.scanPos == 1:
                 pwm.set_pwm(servoPort, 0, servoLeft)
                 time.sleep(0.3)
                 scanList[0] = checkdist()
-
-            # rotate head to middle and check distance
             elif self.scanPos == 2:
                 pwm.set_pwm(servoPort, 0, servoMiddle)
                 time.sleep(0.3)
                 scanList[1] = checkdist()
-
-            # rotate head to right and check distance
             elif self.scanPos == 3:
                 pwm-set_pwm(servoPort,0,servoRight)
                 time.sleep(0.3)
@@ -168,12 +154,10 @@ class Robot:
             if self.scanPos > self.scanNum or self.scanPos < 1:
                 if self.scanDir == 1:
                     self.scanDir = -1
-                elif self.scanDir == -1:
+                elif self.scanDir == -:
                     self.scanDir = 1
                 self.scanPos = self.scanPos + self.scanDir*2
             print(self.scanList)
-
-            self.check_turn()
 
     def check_turn(self):
         min_dist = min(self.scanList)
@@ -184,21 +168,16 @@ class Robot:
 
         if min_dist < self.rangeKeep:
             min_index = self.scanList.index(min_dist)
-
             # check if shortest distance is on left
             if min_index == 0:
                 # turn right
                 self.adjust_turn(0.2)
                 self.adjust_speed(0.1)
-                print("turn right")
-
             # shortest distance on right
             elif min_index == 2:
                 # turn left
                 self.adjust_turn(-0.2)
                 self.adjust_speed(0.1)
-                print("turn left")
-
             # shortest distance in middle
             # compare left and right distance
             else:
@@ -206,21 +185,17 @@ class Robot:
                     # turn right
                     self.adjust_turn(0.2)
                     self.adjust_speed(0.1)
-                    print("turn right")
                 else:
                     self.adjust_turn(-0.2)
                     self.adjust_speed(0.1)
-                    print("turn left")
             if max_dist < self.rangeKeep:
                 # reverse robot
                 self.set_direction(GPIO.HIGH, GPIO.LOW)
                 self.set_speed(30)
-                print("reverse")
         else:
             # no obstacle so go forward
             self.straight()
             self.set_speed(35)
-            print("forward")
 
 
 
@@ -256,5 +231,5 @@ class Robot:
 if __name__ == "__main__":
     robot = Robot()
     print('am i running')
-    robot.run_obstacle(40)
+    robot.test(40, 0.2)
     #robot.run()
