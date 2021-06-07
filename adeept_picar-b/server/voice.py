@@ -161,16 +161,17 @@ if __name__ == "__main__":
             move.motor_right(1, 0, 50)
             time.sleep(2)
             move.motorStop()
-            scGear.moveAngle(2, 0)
+            #scGear.moveAngle(2, 0)
 
         if go_right:
             print("Going right")
-            scGear.moveAngle(2,-45)
+            kit.continuous_servo[2].throttle = 0.4
+            #scGear.moveAngle(2,-45)
             move.motor_left(1, 0, 50)
             move.motor_right(1, 0, 50)
             time.sleep(2)
             move.motorStop()
-            scGear.moveAngle(2, 0)
+            #scGear.moveAngle(2, 0)
 
         else:
             print("Sorry, not a command")
