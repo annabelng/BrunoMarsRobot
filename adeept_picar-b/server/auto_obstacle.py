@@ -21,8 +21,8 @@ class Robot:
         self.hat.frequency = 60
 
         # initiate pwm
-        pwm = Adafruit_PCA9685.PCA9685()
-        pwm.set_pwm_freq(50)
+        self.pwm = Adafruit_PCA9685.PCA9685()
+        self.pwm.set_pwm_freq(50)
 
         # line pin right
         GPIO.setup(20,GPIO.IN)
@@ -59,6 +59,9 @@ class Robot:
         self.scanPos = 1
         self.scanNum = 3
         self.scanList = [0,0,0]
+
+        # distance in cm before robot turns
+        self.rangeKeep = 30
 
         self.pwm_B = GPIO.PWM(17, 1000)
         self.kit = ServoKit(channels=16)
@@ -147,19 +150,21 @@ class Robot:
             print('automatic obstacle avoidance')
             # rotate head to left and check distance
             if self.scanPos == 1:
-                pwm.set_pwm(servoPort, 0, servoLeft)
+                # arguments are channel number, on, number to count up to
+                # before turning off
+                self.pwm.set_pwm(self.servoPort, 0, self.servoLeft)
                 time.sleep(0.3)
-                scanList[0] = checkdist()
+                self.scanList[0] = checkdist()
 
             # rotate head to middle and check distance
             elif self.scanPos == 2:
-                pwm.set_pwm(servoPort, 0, servoMiddle)
+                self.pwm.set_pwm(self.servoPort, 0, self.servoMiddle)
                 time.sleep(0.3)
-                scanList[1] = checkdist()
+                self.scanList[1] = checkdist()
 
             # rotate head to right and check distance
             elif self.scanPos == 3:
-                pwm-set_pwm(servoPort,0,servoRight)
+                self.pwm_set_pwm(self.servoPort, 0,self.servoRight)
                 time.sleep(0.3)
                 self.scanList[2] = checkdist()
 
