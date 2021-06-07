@@ -34,6 +34,24 @@ class Robot:
         # motor
         GPIO.setup(17, GPIO.OUT)
 
+        # servo for controlling horizontal rotation of ultrasonic sensor
+        self.servoPort = 1
+        # middle position of servo
+        self.servoMiddle = 330
+        # left position of servo
+        self.servoLeft = 180
+        # right position of servo
+        self.servoRight = 480
+
+        # scan direction
+        # 1 is left to right
+        # -1 is right to left
+        self.scanDir = 1
+        # current scan position
+        self.scanPos = 1
+        self.scanNum = 3
+        self.scanList = [0,0,0]
+
         self.pwm_B = GPIO.PWM(17, 1000)
         self.kit = ServoKit(channels=16)
 
@@ -110,6 +128,18 @@ class Robot:
                # continue
             else:
                 print ("obstacle is more than 30 cm away")
+
+    def avoid_obstacle(self):
+        while true:
+            print('automatic obstacle avoidance')
+            if self.scanPos == 1:
+                pwm.set_pwm(servoPort, 0, servoLeft)
+                time.sleep(0.3)
+                scanList[0] = checkdist()
+            if self.scanPos == 2:
+                pwm.set_pwm(servoPort, 0, servoMiddle)
+                time.sleep(0.3)
+                scanList[1] = checkdist()
 
     def run(self):
         # Staighten the wheel and start the motor. Accelerate three times and decelerate once to get to the right speed
