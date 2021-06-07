@@ -1,6 +1,6 @@
 import speech_recognition as sr
 import time
-
+from adafruit_servokit import ServoKit
 #import RPIservo
 
 
@@ -9,6 +9,7 @@ import time
 import auto_obstacle
 import move
 move.setup()
+kit = ServoKit(channels=16)
 # obtain audio from the microphone
 #r = sr.Recognizer()
 #mic = sr.Microphone(device_index=2)
@@ -126,8 +127,8 @@ if __name__ == "__main__":
         # determine if guess is correct and if any attempts remain
         go_forwards = command["transcription"].lower() == "forward"
         go_backwards = command["transcription"].lower() == "backwards"
-        go_left = command["transcription"].lower() == "forward"
-        go_right = command["transcription"].lower() == "forward"
+        go_left = command["transcription"].lower() == "left"
+        go_right = command["transcription"].lower() == "right"
 
         user_has_more_attempts = i < NUM_COMMANDS - 1
 
@@ -138,19 +139,20 @@ if __name__ == "__main__":
             print("Going forwards")
             #scGear.moveAngle(2, 0)
             kit.continuous_servo[2].throttle = 0.2
-            move.motor_left(1, 0, 20)
-            move.motor_right(1, 0, 20)
-            time.sleep(2)
+            move.motor_left(1, 0, 50)
+            move.motor_right(1, 0, 50)
+            time.sleep(5)
             move.motorStop()
 
         if go_backwards:
             print("Going backwards")
             #scGear.moveAngle(2, 0)
+            kit.continuous_servo[2].throttle = 0.2
             move.motor_left(1, 1, 50)
             move.motor_right(1, 1, 50)
             time.sleep(2)
             move.motorStop()
-            break
+            #break
         if go_left:
             print("Going left")
 
