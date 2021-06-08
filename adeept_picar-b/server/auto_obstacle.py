@@ -42,14 +42,14 @@ class Robot:
         # servo for controlling horizontal rotation of ultrasonic sensor
         self.servoPort = 1
         # middle position of servo
-        self.servoMiddle = 200
+        self.servoMiddle = 180
         # left position of servo
-        self.servoLeft = 100
+        self.servoLeft = 80
         # right position of servo
-        self.servoRight = 300
+        self.servoRight = 280
 
         # range of cm before robot turns or stops
-        self.range = 30
+        self.range = 25
 
         # scan direction
         # 1 is left to right
@@ -142,12 +142,13 @@ class Robot:
 
     def run_obstacle(self,speed):
         self.straight()
-        self.set_speed(speed)
+        #self.set_speed(speed)
         self.avoid_obstacle()
 
     def avoid_obstacle(self):
         while (True):
             print('automatic obstacle avoidance')
+            self.straight()
             # rotate head to left and check distance
             if self.scanPos == 1:
                 # arguments are channel number, on, number to count up to
@@ -193,16 +194,18 @@ class Robot:
             # check if shortest distance is on left
             if min_index == 0:
                 # turn right
-                self.adjust_turn(0.3)
-                self.adjust_speed(0.1)
+                self.adjust_turn(0.2)
+                self.adjust_speed(0.2)
+                time.sleep(0.5)
                 print("turn right")
 
             # shortest distance on right
             elif min_index == 2:
                 # turn left
-                self.adjust_turn(-0.3)
-                self.adjust_speed(0.1)
+                self.adjust_turn(-0.1)
+                self.adjust_speed(0.2)
                 print("turn left")
+                time.sleep(0.5)
 
             # shortest distance in middle
             # compare left and right distance
@@ -212,23 +215,34 @@ class Robot:
                     self.adjust_turn(0.3)
                     self.adjust_speed(0.1)
                     print("turn right")
+                    time.sleep(0.5)
                 else:
                     self.adjust_turn(-0.3)
                     self.adjust_speed(0.1)
                     print("turn left")
+                    time.sleep(0.5)
             if max_dist < self.rangeKeep:
                 # reverse robot
                 self.stop()
                 self.set_direction(GPIO.HIGH, GPIO.LOW)
                 self.set_speed(30)
+                time.sleep(0.5)
                 print("reverse")
         else:
             # no obstacle so go forward
             self.straight()
-            self.set_speed(50)
+            self.set_speed(30)
+            time.sleep(0.5)
             print("forward")
 
-
+    def test_turn(self):
+        while (True):
+            self.straight()
+            self.set_speed(50)
+            time.sleep(0.5)
+            self.adjust_turn(0.2)
+            self.adjust_speed(10)
+            time.sleep(1.0)
 
     def run(self):
         # Staighten the wheel and start the motor. Accelerate three times and decelerate once to get to the right speed
@@ -262,5 +276,7 @@ class Robot:
 if __name__ == "__main__":
     robot = Robot()
     print('am i running')
-    robot.run_obstacle(50)
+    robot.test_turn()
+    #robot.run_obstacle(30)
     #robot.run()
+    
