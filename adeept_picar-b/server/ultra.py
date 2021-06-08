@@ -35,5 +35,5 @@ def checkdist():       #Reading distance
 
 if __name__ == '__main__':
     while 1:
-        print("obstacle detected " + str(checkdist()) + " cm away")
+        print("obstacle detected " + str(checkdist()) + " cm away from robot")
         time.sleep(1)
