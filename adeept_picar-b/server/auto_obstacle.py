@@ -276,7 +276,7 @@ class Robot:
 if __name__ == "__main__":
     robot = Robot()
     print('am i running')
-    robot.test_turn()
-    #robot.run_obstacle(30)
+    #robot.test_turn()
+    robot.run_obstacle(30)
     #robot.run()
     
