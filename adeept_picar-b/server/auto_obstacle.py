@@ -97,7 +97,7 @@ class Robot:
 
     def stop(self):
         self.set_direction(GPIO.LOW, GPIO.LOW)
-        GPIO.cleanup()
+       # GPIO.cleanup()
 
     def adjust_speed(self, increment):
         self.speed += increment
@@ -205,14 +205,15 @@ class Robot:
         middle = self.scanList[1]
         right = self.scanList[2]
 
-        if min_dist < self.rangeKeep:
+        if min_dist < self.range:
             min_index = self.scanList.index(min_dist)
 
             # check if shortest distance is on left
             if min_index == 0:
                 # turn right
+                self.stop()
                 self.adjust_turn(0.2)
-                self.adjust_speed(0.1)
+                self.set_speed(50)
                 time.sleep(2)
                 self.straight()
                 print("turn right")
@@ -220,8 +221,9 @@ class Robot:
             # shortest distance on right
             elif min_index == 2:
                 # turn left
+                self.stop()
                 self.adjust_turn(-0.2)
-                self.adjust_speed(0.4)
+                self.set_speed(50)
                 print("turn left")
                 time.sleep(2)
                 self.straight()
@@ -231,14 +233,16 @@ class Robot:
             else:
                 if left > right:
                     # turn right
+                    self.stop()
                     self.adjust_turn(0.2)
-                    self.adjust_speed(0.1)
+                    self.set_speed(50)
                     print("turn right")
                     time.sleep(2)
                     self.straight()
                 else:
+                    self.stop()
                     self.adjust_turn(-0.2)
-                    self.adjust_speed(0.1)
+                    self.set_speed(50)
                     print("turn left")
                     time.sleep(2)
                     self.straight()
@@ -246,13 +250,13 @@ class Robot:
                 # reverse robot
                 self.stop()
                 self.set_direction(GPIO.HIGH, GPIO.LOW)
-                self.set_speed(30)
+                self.set_speed(40)
                 time.sleep(3)
                 print("reverse")
         else:
             # no obstacle so go forward
             self.straight()
-            self.set_speed(30)
+            self.set_speed(40)
             time.sleep(0.5)
             print("forward")
 
@@ -262,7 +266,7 @@ class Robot:
             self.set_speed(50)
             time.sleep(0.5)
             self.adjust_turn(0.2)
-            self.adjust_speed(10)
+            self.set_speed(60)
             time.sleep(1.0)
 
     def run(self):
@@ -278,14 +282,14 @@ class Robot:
             if left:
                 self.left_count += 1
                 self.adjust_turn(0.2)
-                self.adjust_speed(0.1)
+                self.set_speed(60)
             else:
                 self.left_count = 0
 
             if right:
                 self.right_count += 1
                 self.adjust_turn(-0.2)
-                self.adjust_speed(0.1)
+                self.set_speed(60)
             else:
                 self.right_count = 0
 
@@ -296,10 +300,10 @@ class Robot:
 
 if __name__ == "__main__":
     robot = Robot()
-    robot.test(40)
+    #robot.test(40)
     #robot.stop()
     print('am i running')
     #robot.test_turn()
-    #robot.run_obstacle(50)
+    robot.run_obstacle(40)
     #robot.run()
     
