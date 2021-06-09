@@ -125,10 +125,10 @@ if __name__ == "__main__":
         print("You said: {}".format(command["transcription"]))
 
         # determine if guess is correct and if any attempts remain
-        go_forwards = command["transcription"].lower() == "forward"
-        go_backwards = command["transcription"].lower() == "backwards"
-        go_left = command["transcription"].lower() == "left"
-        go_right = command["transcription"].lower() == "right"
+        go_forwards = command["transcription"].lower() == "go forward"
+        go_backwards = command["transcription"].lower() == "go backward"
+        go_left = command["transcription"].lower() == "go left"
+        go_right = command["transcription"].lower() == "go right"
 
         user_has_more_attempts = i < NUM_COMMANDS - 1
 
@@ -141,7 +141,7 @@ if __name__ == "__main__":
             kit.continuous_servo[2].throttle = 0.2
             move.motor_left(1, 0, 50)
             move.motor_right(1, 0, 50)
-            time.sleep(5)
+            time.sleep(3)
             move.motorStop()
 
         if go_backwards:
@@ -165,7 +165,7 @@ if __name__ == "__main__":
 
         if go_right:
             print("Going right")
-            kit.continuous_servo[2].throttle = 0.4
+            kit.continuous_servo[2].throttle = 0
             #scGear.moveAngle(2,-45)
             move.motor_left(1, 0, 50)
             move.motor_right(1, 0, 50)
