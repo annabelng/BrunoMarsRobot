@@ -9,6 +9,7 @@ import adafruit_pca9685
 from ultra import *
 from move import *
 import Adafruit_PCA9685
+from led import *
 
 class Robot:
 
@@ -24,11 +25,19 @@ class Robot:
         self.pwm = Adafruit_PCA9685.PCA9685()
         self.pwm.set_pwm_freq(50)
 
+        #green light
+        GPIO.setup(16, GPIO.OUT)
+        GPIO.setup(21, GPIO.OUT)
+
+        #red light
+        GPIO.setup(15, GPIO.OUT)
+        GPIO.setup(19, GPIO.OUT)
+
         # line pin right
-        GPIO.setup(20,GPIO.IN)
+        #GPIO.setup(20,GPIO.IN)
 
         # line pin left
-        GPIO.setup(19,GPIO.IN)
+        #GPIO.setup(19,GPIO.IN)
 
         # forward
         GPIO.setup(18, GPIO.OUT)
@@ -125,7 +134,8 @@ class Robot:
     def straight(self):
         self.set_turn(0.2)
 
-    def test(self, speed, turn):
+    def test(self, speed):
+        #setup()
         self.straight()
         self.set_speed(40)
         time.sleep(0.2)
@@ -134,11 +144,16 @@ class Robot:
         while(True):
             if (checkdist() < 30):
                 print("obstacle is less than 30 cm away")
+                #both_off()
+                GPIO.output(16, off)
+                GPIO.output(21, off)
+                red()
                 self.stop()
                 break
                # continue
             else:
                 print ("obstacle is more than 30 cm away")
+                green()
 
     def run_obstacle(self,speed):
         self.straight()
@@ -275,9 +290,10 @@ class Robot:
 
 if __name__ == "__main__":
     robot = Robot()
+    robot.test(40)
     #robot.stop()
     print('am i running')
     #robot.test_turn()
-    robot.run_obstacle(50)
+    #robot.run_obstacle(50)
     #robot.run()
     
