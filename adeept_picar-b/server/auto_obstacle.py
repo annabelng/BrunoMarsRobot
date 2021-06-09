@@ -44,9 +44,9 @@ class Robot:
         # middle position of servo
         self.servoMiddle = 180
         # left position of servo
-        self.servoLeft = 80
+        self.servoLeft = 60
         # right position of servo
-        self.servoRight = 280
+        self.servoRight = 300
 
         # range of cm before robot turns or stops
         self.range = 25
@@ -148,7 +148,7 @@ class Robot:
     def avoid_obstacle(self):
         while (True):
             print('automatic obstacle avoidance')
-            self.straight()
+            #self.straight()
             # rotate head to left and check distance
             if self.scanPos == 1:
                 # arguments are channel number, on, number to count up to
@@ -194,8 +194,8 @@ class Robot:
             # check if shortest distance is on left
             if min_index == 0:
                 # turn right
-                self.adjust_turn(0.2)
-                self.adjust_speed(0.2)
+                self.adjust_turn(0.1)
+                self.adjust_speed(0.4)
                 time.sleep(0.5)
                 print("turn right")
 
@@ -203,7 +203,7 @@ class Robot:
             elif min_index == 2:
                 # turn left
                 self.adjust_turn(-0.1)
-                self.adjust_speed(0.2)
+                self.adjust_speed(0.4)
                 print("turn left")
                 time.sleep(0.5)
 
@@ -275,8 +275,9 @@ class Robot:
 
 if __name__ == "__main__":
     robot = Robot()
+    #robot.stop()
     print('am i running')
     #robot.test_turn()
-    robot.run_obstacle(30)
+    robot.run_obstacle(50)
     #robot.run()
     
