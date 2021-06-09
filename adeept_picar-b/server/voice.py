@@ -37,6 +37,7 @@ def recognize_speech_from_mic(recognizer, microphone):
     # from the microphone
     with microphone as source:
         recognizer.adjust_for_ambient_noise(source)
+        recognizer.record(source,duration=2)
         audio = recognizer.listen(source)
 
     # set up the response object
