@@ -110,8 +110,8 @@ if __name__ == "__main__":
         for j in range(RETRY_LIMIT):
             print('Guess {}. Speak!'.format(i+1))
             command = recognize_speech_from_mic(recognizer, microphone)
-            if command["transcription"]:
-                break
+            #if command["transcription"]:
+            #    break
             if not command["success"]:
                 break
             print("I didn't catch that. What did you say?\n")
