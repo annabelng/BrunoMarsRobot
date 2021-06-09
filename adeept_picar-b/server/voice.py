@@ -118,9 +118,9 @@ if __name__ == "__main__":
             print("I didn't catch that. What did you say?\n")
 
         # if there was an error, stop the game
-        if command["error"]:
-            print("ERROR: {}".format(command["error"]))
-            break
+            if command["error"]:
+                print("ERROR: {}".format(command["error"]))
+                break
 
         # show the user the transcription
         print("You said: {}".format(command["transcription"]))
@@ -136,81 +136,44 @@ if __name__ == "__main__":
         # determine if the user has won the game
         # if not, repeat the loop if user has more attempts
         # if no attempts left, the user loses the game
-        if go_forwards:
-            print("Going forwards")
-            #scGear.moveAngle(2, 0)
-            kit.continuous_servo[2].throttle = 0.2
-            move.motor_left(1, 0, 50)
-            move.motor_right(1, 0, 50)
-            time.sleep(3)
-            move.motorStop()
+            if go_forwards:
+                print("Going forwards")
+                #scGear.moveAngle(2, 0)
+                kit.continuous_servo[2].throttle = 0.2
+                move.motor_left(1, 0, 50)
+                move.motor_right(1, 0, 50)
+                time.sleep(3)
+                move.motorStop()
+            if go_backwards:
+                print("Going backwards")
+                #scGear.moveAngle(2, 0)
+                kit.continuous_servo[2].throttle = 0.2
+                move.motor_left(1, 1, 50)
+                move.motor_right(1, 1, 50)
+                time.sleep(2)
+                move.motorStop()
+                #break
+            if go_left:
+                print("Going left")
+                kit.continuous_servo[2].throttle = 0.4
+                #scGear.moveAngle(2, 45)
+                move.motor_left(1, 0, 50)
+                move.motor_right(1, 0, 50)
+                time.sleep(2)
+                move.motorStop()
+                #scGear.moveAngle(2, 0)
 
-        if go_backwards:
-            print("Going backwards")
-            #scGear.moveAngle(2, 0)
-            kit.continuous_servo[2].throttle = 0.2
-            move.motor_left(1, 1, 50)
-            move.motor_right(1, 1, 50)
-            time.sleep(2)
-            move.motorStop()
-            #break
-        if go_left:
-            print("Going left")
-            kit.continuous_servo[2].throttle = 0.4
-            #scGear.moveAngle(2, 45)
-            move.motor_left(1, 0, 50)
-            move.motor_right(1, 0, 50)
-            time.sleep(2)
-            move.motorStop()
-            #scGear.moveAngle(2, 0)
-
-        if go_right:
-            print("Going right")
-            kit.continuous_servo[2].throttle = 0
-            #scGear.moveAngle(2,-45)
-            move.motor_left(1, 0, 50)
-            move.motor_right(1, 0, 50)
-            time.sleep(2)
-            move.motorStop()
-            #scGear.moveAngle(2, 0)
-
-        else:
-            print("Sorry, not a command")
-            break
+            if go_right:
+                print("Going right")
+                kit.continuous_servo[2].throttle = 0
+                #scGear.moveAngle(2,-45)
+                move.motor_left(1, 0, 50)
+                move.motor_right(1, 0, 50)
+                time.sleep(2)
+                move.motorStop()
+                #scGear.moveAngle(2, 0)
+            else:
+                print("Sorry, not a command")
+                break
 
 
-""""
-if 'forward' in v_command:
-  print("moving forward")
-  #scGear.moveAngle(2, 0)
-  #move.motor_left(1, 0, speed_set)
-  #move.motor_right(1, 0, speed_set)
-  #time.sleep(2)
-  #move.motorStop()
-
-elif 'backward' in v_command:
-  print("moving backwards")
-
-
-elif 'left' in v_command:
-  print("moving left")
- # scGear.moveAngle(2, 45)
-  #move.motor_left(1, 0, speed_set)
-  #move.motor_right(1, 0, speed_set)
-  #time.sleep(2)
-  #move.motorStop()
-  #scGear.moveAngle(2, 0)
-elif "right" in v_command:
-  print("moving right")
-  #scGear.moveAngle(2,-45)
-  #move.motor_left(1, 0, speed_set)
-  #move.motor_right(1, 0, speed_set)
-  #time.sleep(2)
-  #move.motorStop()
-  #scGear.moveAngle(2, 0)
-
-elif 'stop' in v_command:
-   #move.motorStop()  else:
-   pass
-
-"""
