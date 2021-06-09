@@ -161,6 +161,7 @@ class Robot:
         self.avoid_obstacle()
 
     def avoid_obstacle(self):
+        count = 0
         while (True):
             print('automatic obstacle avoidance')
             #self.straight()
@@ -193,8 +194,9 @@ class Robot:
                     self.scanDir = 1
                 self.scanPos = self.scanPos + self.scanDir*2
             print(self.scanList)
-
-            self.check_turn()
+            count += 1
+            if count > 3:
+                self.check_turn()
 
     def check_turn(self):
         min_dist = min(self.scanList)
@@ -209,39 +211,43 @@ class Robot:
             # check if shortest distance is on left
             if min_index == 0:
                 # turn right
-                self.adjust_turn(0.1)
-                self.adjust_speed(0.4)
-                time.sleep(0.5)
+                self.adjust_turn(0.2)
+                self.adjust_speed(0.1)
+                time.sleep(2)
+                self.straight()
                 print("turn right")
 
             # shortest distance on right
             elif min_index == 2:
                 # turn left
-                self.adjust_turn(-0.1)
+                self.adjust_turn(-0.2)
                 self.adjust_speed(0.4)
                 print("turn left")
-                time.sleep(0.5)
+                time.sleep(2)
+                self.straight()
 
             # shortest distance in middle
             # compare left and right distance
             else:
                 if left > right:
                     # turn right
-                    self.adjust_turn(0.3)
+                    self.adjust_turn(0.2)
                     self.adjust_speed(0.1)
                     print("turn right")
-                    time.sleep(0.5)
+                    time.sleep(2)
+                    self.straight()
                 else:
-                    self.adjust_turn(-0.3)
+                    self.adjust_turn(-0.2)
                     self.adjust_speed(0.1)
                     print("turn left")
-                    time.sleep(0.5)
+                    time.sleep(2)
+                    self.straight()
             if max_dist < self.rangeKeep:
                 # reverse robot
                 self.stop()
                 self.set_direction(GPIO.HIGH, GPIO.LOW)
                 self.set_speed(30)
-                time.sleep(0.5)
+                time.sleep(3)
                 print("reverse")
         else:
             # no obstacle so go forward
