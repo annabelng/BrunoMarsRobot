@@ -1,158 +1,142 @@
 #!/usr/bin/python3
-# File name   : LED.py
-# Description : WS_2812
-# Website     : based on the code from https://github.com/rpi-ws281x/rpi-ws281x-python/blob/master/examples/strandtest.py
-# Author      : original code by Tony DiCola (tony@tonydicola.com)
-# Date        : 2019/02/23
+# File name   : motor.py
+# Description : Control LEDs 
+# Website     : www.adeept.com
+# E-mail      : support@adeept.com
+# Author      : William
+# Date        : 2018/10/12
+import RPi.GPIO as GPIO
 import time
-from rpi_ws281x import *
-import argparse
-import threading
 
-# LED strip configuration:
-LED_COUNT      = 12      # Number of LED pixels.
-LED_PIN        = 12      # GPIO pin connected to the pixels (18 uses PWM!).
-#LED_PIN        = 10      # GPIO pin connected to the pixels (10 uses SPI /dev/spidev0.0).
-LED_FREQ_HZ    = 800000  # LED signal frequency in hertz (usually 800khz)
-LED_DMA        = 10      # DMA channel to use for generating signal (try 10)
-LED_BRIGHTNESS = 255     # Set to 0 for darkest and 255 for brightest
-LED_INVERT     = False   # True to invert the signal (when using NPN transistor level shift)
-LED_CHANNEL    = 0       # set to '1' for GPIOs 13, 19, 41, 45 or 53
+left_R = 15
+left_G = 16
+left_B = 18
 
-ledfunc = ''
+right_R = 19
+right_G = 21
+right_B = 22
 
-def wheel(pos):
-    """Generate rainbow colors across 0-255 positions."""
-    if pos < 85:
-        return Color(pos * 3, 255 - pos * 3, 0)
-    elif pos < 170:
-        pos -= 85
-        return Color(255 - pos * 3, 0, pos * 3)
-    else:
-        pos -= 170
-        return Color(0, pos * 3, 255 - pos * 3)
+on  = GPIO.LOW
+off = GPIO.HIGH
 
-class LED:
-    def __init__(self):
-        self.LED_COUNT      = 16      # Number of LED pixels.
-        self.LED_PIN        = 12      # GPIO pin connected to the pixels (18 uses PWM!).
-        self.LED_FREQ_HZ    = 800000  # LED signal frequency in hertz (usually 800khz)
-        self.LED_DMA        = 10      # DMA channel to use for generating signal (try 10)
-        self.LED_BRIGHTNESS = 255     # Set to 0 for darkest and 255 for brightest
-        self.LED_INVERT     = False   # True to invert the signal (when using NPN transistor level shift)
-        self.LED_CHANNEL    = 0       # set to '1' for GPIOs 13, 19, 41, 45 or 53
-        parser = argparse.ArgumentParser()
-        parser.add_argument('-c', '--clear', action='store_true', help='clear the display on exit')
-        args = parser.parse_args()
+def both_on():
+    GPIO.output(left_R, on)
+    GPIO.output(left_G, on)
+    GPIO.output(left_B, on)
 
-        # Create NeoPixel object with appropriate configuration.
-        self.strip = Adafruit_NeoPixel(self.LED_COUNT, self.LED_PIN, self.LED_FREQ_HZ, self.LED_DMA, self.LED_INVERT, self.LED_BRIGHTNESS, self.LED_CHANNEL)
-        # Intialize the library (must be called once before other functions).
-        self.strip.begin()
+    GPIO.output(right_R, on)
+    GPIO.output(right_G, on)
+    GPIO.output(right_B, on)
 
-    # Define functions which animate LEDs in various ways.
-    def colorWipe(self, R, G, B):
-        """Wipe color across display a pixel at a time."""
-        color = Color(R,G,B)
-        for i in range(self.strip.numPixels()):
-            self.strip.setPixelColor(i, color)
-            self.strip.show()
+def setup():#initialization
+    GPIO.setwarnings(False)
+    GPIO.setmode(GPIO.BOARD)
+    GPIO.setup(left_R, GPIO.OUT)
+    GPIO.setup(left_G, GPIO.OUT)
+    GPIO.setup(left_B, GPIO.OUT)
+    GPIO.setup(right_R, GPIO.OUT)
+    GPIO.setup(right_G, GPIO.OUT)
+    GPIO.setup(right_B, GPIO.OUT)
+    both_off()
 
-    def rainbow(self, wait_ms=20, iterations=1):
-        """Draw rainbow that fades across all pixels at once."""
-        for j in range(256 * iterations):
-            if ledfunc == 'rainbow':
-                for i in range(self.strip.numPixels()):
-                    if ledfunc == 'rainbow':
-                        self.strip.setPixelColor(i, wheel((i + j) & 255))
-                    else:
-                        break
-                self.strip.show()
-                time.sleep(wait_ms / 1000.0)
-            else:
-                break
-    
-    def SideAWipe(self, R, G, B):
-        """Wipe color across display a pixel at a time."""
-        color = Color(R,G,B)
-        for i in range(0, 6):
-            self.strip.setPixelColor(i, color)
-            self.strip.show()
+def both_off():
+    GPIO.output(left_R, off)
+    GPIO.output(left_G, off)
+    GPIO.output(left_B, off)
 
-    def SideBWipe(self, R, G, B):
-        """Wipe color across display a pixel at a time."""
-        color = Color(R,G,B)
-        for i in range(6, 12):
-            self.strip.setPixelColor(i, color)
-            self.strip.show()
+    GPIO.output(right_R, off)
+    GPIO.output(right_G, off)
+    GPIO.output(right_B, off)
 
+def side_on(side_X):
+    GPIO.output(side_X, on)
 
-class LED_ctrl(threading.Thread):
-    def __init__(self, *args, **kwargs):
-        super(LED_ctrl, self).__init__(*args, **kwargs)
-        self.__flag = threading.Event()
-        self.__flag.set()
-        self.__running = threading.Event()
-        self.__running.set()
+def side_off(side_X):
+    GPIO.output(side_X, off)
 
-    def run(self):
-        global goal_pos, servo_command, init_get, functionMode
-        while self.__running.isSet():
-            self.__flag.wait()
-            if ledfunc == 'police':
-                time.sleep(0.1)
-                led.SideAWipe(0, 0, 255)
-                led.SideBWipe(255, 0, 0)
-                time.sleep(0.03)
-                led.colorWipe(0,0,0)
-                time.sleep(0.03)
+def police(police_time):
+    for i in range (1,police_time):
+        for i in range (1,3):
+            side_on(left_R)
+            side_on(right_B)
+            time.sleep(0.1)
+            both_off()
+            side_on(left_B)
+            side_on(right_R)
+            time.sleep(0.1)
+            both_off()
+        for i in range (1,5):
+            side_on(left_R)
+            side_on(right_B)
+            time.sleep(0.3)
+            both_off()
+            side_on(left_B)
+            side_on(right_R)
+            time.sleep(0.3)
+            both_off()
 
-                led.SideAWipe(0, 0, 255)
-                led.SideBWipe(255, 0, 0)
-                time.sleep(0.03)
-                led.colorWipe(0,0,0)
-                time.sleep(0.03)
+def red():
+    side_on(right_R)
+    side_on(left_R)
 
-                led.SideAWipe(0, 0, 255)
-                led.SideBWipe(255, 0, 0)
-                time.sleep(0.03)
-                led.colorWipe(0,0,0)
-                time.sleep(0.03)
+def green():
+    side_on(right_G)
+    side_on(left_G)
 
-                time.sleep(0.1)
-                led.SideAWipe(255, 0, 0)
-                led.SideBWipe(0, 0, 255)
-                time.sleep(0.03)
-                led.colorWipe(0,0,0)
-                time.sleep(0.03)
+def blue():
+    side_on(right_B)
+    side_on(left_B)
 
-                led.SideAWipe(255, 0, 0)
-                led.SideBWipe(0, 0, 255)
-                time.sleep(0.03)
-                led.colorWipe(0,0,0)
-                time.sleep(0.03)
+def yellow():
+    red()
+    green()    
 
-                led.SideAWipe(255, 0, 0)
-                led.SideBWipe(0, 0, 255)
-                time.sleep(0.03)
-                led.colorWipe(0,0,0)
-                time.sleep(0.03)
-            elif ledfunc == 'rainbow':
-                led.rainbow()
-            elif ledfunc == '':
-                self.pause()
+def pink():
+    red()
+    blue()
 
-    def pause(self):
-        self.__flag.clear()
+def cyan():
+    blue()
+    green()
 
-    def resume(self):
-        self.__flag.set()
+def side_color_on(side_X,side_Y):
+    GPIO.output(side_X, on)
+    GPIO.output(side_Y, on)
 
-    def stop(self):
-        self.__flag.set()
-        self.__running.clear()
+def side_color_off(side_X,side_Y):
+    GPIO.output(side_X, off)
+    GPIO.output(side_Y, off)
 
-led = LED()
+def turn_left(times):
+    for i in range(0,times):
+        both_off()
+        side_on(left_G)
+        side_on(left_R)
+        time.sleep(0.5)
+        both_off()
+        time.sleep(0.5)
+
+def turn_right(times):
+    for i in range(1,times):
+        both_off()
+        side_on(right_G)
+        side_on(right_R)
+        time.sleep(0.5)
+        both_off()
+        time.sleep(0.5)
+
 if __name__ == '__main__':
-    led = LED()
-    led.colorWipe(255,255,255)
+    setup()
+    police(4)
+    both_on()
+    time.sleep(1)
+    both_off()
+    yellow()
+    time.sleep(5)
+    both_off()
+    pink()
+    time.sleep(5)
+    both_off()
+    cyan()
+    time.sleep(5)
+    both_off()
