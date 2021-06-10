@@ -26,12 +26,12 @@ class Robot:
         self.pwm.set_pwm_freq(50)
 
         #green light
-        GPIO.setup(16, GPIO.OUT)
-        GPIO.setup(21, GPIO.OUT)
+        GPIO.setup(23, GPIO.OUT)
+        GPIO.setup(9, GPIO.OUT)
 
         #red light
-        GPIO.setup(15, GPIO.OUT)
-        GPIO.setup(19, GPIO.OUT)
+        GPIO.setup(22, GPIO.OUT)
+        GPIO.setup(10, GPIO.OUT)
 
         # line pin right
         #GPIO.setup(20,GPIO.IN)

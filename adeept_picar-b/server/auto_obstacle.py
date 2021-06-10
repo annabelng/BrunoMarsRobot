@@ -149,11 +149,8 @@ class Robot:
             self.pwm.set_pwm(self.servoPort, 0, self.servoMiddle)
             if (checkdist() < self.range):
                 print("obstacle is less than " + str(self.range) + " cm away")
-                #turn off green lights
-                GPIO.output(16, GPIO.HIGH)
-                GPIO.output(21, GPIO.HIGH)
                 # turn on red light
-                red()
+                self.red()
 
                 # stop motors
                 self.pause()
@@ -164,8 +161,8 @@ class Robot:
                 self.turn_obstacle()
 
             else:
-                print ("obstacle is more than "+ str(self.range) + " cm away")
-                green()
+                #print ("obstacle is more than "+ str(self.range) + " cm away")
+                self.green()
 
     def turn_obstacle(self):
         dir = self.check_turn()
@@ -183,11 +180,14 @@ class Robot:
             print('turning right')
             self.set_turn(0.6)
             self.set_speed(60)
-            time.sleep(2)
+            time.sleep(1.9)
+
             # straighten motor after turning
-            self.straight()
             # lower speed
+            self.straight()
             self.set_speed(40)
+            time.sleep(0.2)
+
              # straighten to forward direction
             # by turning the opposite direction
             self.set_turn(-0.2)
@@ -203,12 +203,14 @@ class Robot:
             print('turning left')
             self.set_turn(-0.2)
             self.set_speed(60)
-            time.sleep(2)
+            time.sleep(1.9)
+
             # straighten motor after turning
-            self.straight()
             # lower speed
+            self.straight()
             self.set_speed(40)
             time.sleep(0.2)
+
             # straighten to forward direction
             # by turning the opposite direction
             self.set_turn(0.6)
@@ -225,41 +227,35 @@ class Robot:
             #self.straight()
             # rotate head to left and check distance
             if self.scanPos == 1:
-                print('left distance')
+                # print('left distance')
                 # arguments are channel number, on, number to count up to
                 # before turning off
                 self.pwm.set_pwm(self.servoPort, 0, self.servoLeft)
                 time.sleep(0.2)
                 self.scanList[0] = checkdist()
+                print('left distance is ' + str(self.scanList[0]))
 
             # rotate head to middle and check distance
             elif self.scanPos == 2:
-                print('middle distance')
+                #print('middle distance')
                 self.pwm.set_pwm(self.servoPort, 0, self.servoMiddle)
                 time.sleep(0.2)
                 self.scanList[1] = checkdist()
+                print('middle distance is ' + str(self.scanList[0]))
 
             # rotate head to right and check distance
             elif self.scanPos == 3:
-                print('right distance')
+                #print('right distance')
                 self.pwm.set_pwm(self.servoPort, 0,self.servoRight)
                 time.sleep(0.2)
                 self.scanList[2] = checkdist()
+                print('right distance is ' + str(self.scanList[0]))
 
             # next direction 
-            self.scanPos = self.scanPos + self.scanDir
+            self.scanPos += 1
 
-            # if cycle done, reset counting number
-            if self.scanPos > self.scanNum or self.scanPos < 1:
-                if self.scanDir == 1:
-                    self.scanDir = -1
-                elif self.scanDir == -1:
-                    self.scanDir = 1
-                self.scanPos = self.scanPos + self.scanDir*2
-            print(self.scanList)
-
-            # reset head to middle
-            self.pwm.set_pwm(self.servoPort, 0, self.servoMiddle)
+        # reset head to middle
+        self.pwm.set_pwm(self.servoPort, 0, self.servoMiddle)
 
     def check_turn(self):
         # get updated distancs in each dir
@@ -372,7 +368,7 @@ class Robot:
         # turning green on
         GPIO.output(23, GPIO.LOW)
         GPIO.output(9, GPIO.LOW)
-        print('green on')
+        #print('green on')
 
     def both_off(self):
         GPIO.output(22, GPIO.HIGH)
@@ -396,6 +392,6 @@ if __name__ == "__main__":
     #robot.stop()
     print('am i running')
     #robot.test_turn()
-    #robot.check_obstacle(40)
+    robot.check_obstacle(40)
     #robot.run() 
-    robot.lights()
+    #robot.lights()
