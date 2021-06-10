@@ -51,14 +51,14 @@ class Robot:
         # servo for controlling horizontal rotation of ultrasonic sensor
         self.servoPort = 1
         # middle position of servo
-        self.servoMiddle = 180
+        self.servoMiddle = 235
         # left position of servo
-        self.servoLeft = 60
+        self.servoLeft = 350
         # right position of servo
-        self.servoRight = 300
+        self.servoRight = 100
 
         # range of cm before robot turns or stops
-        self.range = 25
+        self.range = 30
 
         # scan direction
         # 1 is left to right
@@ -97,7 +97,10 @@ class Robot:
 
     def stop(self):
         self.set_direction(GPIO.LOW, GPIO.LOW)
-       # GPIO.cleanup()
+        GPIO.cleanup()
+
+    def pause(self):
+        self.set_direction(GPIO.LOW, GPIO.LOW)
 
     def adjust_speed(self, increment):
         self.speed += increment
@@ -134,59 +137,120 @@ class Robot:
     def straight(self):
         self.set_turn(0.2)
 
-    def test(self, speed):
+    def check_obstacle(self, speed):
         #setup()
+        time.sleep(2)
         self.straight()
         self.set_speed(40)
         time.sleep(0.2)
         self.set_speed(speed)
        # self.set_turn(turn)
         while(True):
-            if (checkdist() < 30):
-                print("obstacle is less than 30 cm away")
-                #both_off()
-                GPIO.output(16, off)
-                GPIO.output(21, off)
+            # check is obstacle is less than 30 cm away
+            self.pwm.set_pwm(self.servoPort, 0, self.servoMiddle)
+            if (checkdist() < self.range):
+                print("obstacle is less than " + str(self.range) + " cm away")
+                #turn off green lights
+                GPIO.output(16, GPIO.HIGH)
+                GPIO.output(21, GPIO.HIGH)
+                # turn on red light
                 red()
-                self.stop()
-                break
-               # continue
+
+                # stop motors
+                self.pause()
+
+                # check distances in each direction
+                # figure out which direction to turn
+                # turn for 2 seconds
+                self.turn_obstacle()
+
             else:
-                print ("obstacle is more than 30 cm away")
+                print ("obstacle is more than "+ str(self.range) + " cm away")
                 green()
 
-    def run_obstacle(self,speed):
-        self.straight()
-        #self.set_speed(speed)
-        self.avoid_obstacle()
+    def turn_obstacle(self):
+        dir = self.check_turn()
+        # reverse for 2 seconds
+        self.set_speed(35)
+        self.set_direction(GPIO.HIGH, GPIO.LOW)
+        time.sleep(2)
+        # stop after reversing
+        self.pause()
+        time.sleep(0.5)
+        # set forward direction
+        self.set_direction(GPIO.LOW, GPIO.HIGH)
+        if dir == 'right':
+            # turn right for 2 sec
+            print('turning right')
+            self.set_turn(0.6)
+            self.set_speed(60)
+            time.sleep(2)
+            # straighten motor after turning
+            self.straight()
+            # lower speed
+            self.set_speed(40)
+             # straighten to forward direction
+            # by turning the opposite direction
+            self.set_turn(0)
+            self.set_speed(50)
+            time.sleep(0.5)
+            # straighten again
+            self.straight()
+            self.set_speed(40)
 
-    def avoid_obstacle(self):
-        count = 0
-        while (True):
-            print('automatic obstacle avoidance')
+
+        elif dir == 'left':
+            # turn left for 2 sec
+            print('turning left')
+            self.set_turn(-0.2)
+            self.set_speed(60)
+            time.sleep(2)
+            # straighten motor after turning
+            self.straight()
+            # lower speed
+            self.set_speed(40)
+            time.sleep(0.2)
+            # straighten to forward direction
+            # by turning the opposite direction
+            self.set_turn(0.4)
+            self.set_speed(50)
+            time.sleep(0.5)
+            # straighten again
+            self.straight()
+            self.set_speed(40)
+
+    def obstacle_distance(self):
+        self.scanPos = 1
+        for x in range(3):
+            print('checking distances')
             #self.straight()
             # rotate head to left and check distance
             if self.scanPos == 1:
+                print('left distance')
                 # arguments are channel number, on, number to count up to
                 # before turning off
                 self.pwm.set_pwm(self.servoPort, 0, self.servoLeft)
-                time.sleep(0.3)
+                time.sleep(0.2)
                 self.scanList[0] = checkdist()
 
             # rotate head to middle and check distance
             elif self.scanPos == 2:
+                print('middle distance')
                 self.pwm.set_pwm(self.servoPort, 0, self.servoMiddle)
-                time.sleep(0.3)
+                time.sleep(0.2)
                 self.scanList[1] = checkdist()
 
             # rotate head to right and check distance
             elif self.scanPos == 3:
+                print('right distance')
                 self.pwm.set_pwm(self.servoPort, 0,self.servoRight)
-                time.sleep(0.3)
+                time.sleep(0.2)
                 self.scanList[2] = checkdist()
 
+            # next direction 
             self.scanPos = self.scanPos + self.scanDir
 
+            # if cycle done, reset counting number
             if self.scanPos > self.scanNum or self.scanPos < 1:
                 if self.scanDir == 1:
                     self.scanDir = -1
@@ -194,71 +258,51 @@ class Robot:
                     self.scanDir = 1
                 self.scanPos = self.scanPos + self.scanDir*2
             print(self.scanList)
-            count += 1
-            if count > 3:
-                self.check_turn()
+
+            # reset head to middle
+            self.pwm.set_pwm(self.servoPort, 0, self.servoMiddle)
 
     def check_turn(self):
+        # get updated distancs in each dir
+        self.obstacle_distance()
+
+        # min and max distance value
         min_dist = min(self.scanList)
         max_dist = max(self.scanList)
+
+        # setting distances for each dir
         left = self.scanList[0]
         middle = self.scanList[1]
         right = self.scanList[2]
 
+        # check if minimum distance is less than range
         if min_dist < self.range:
             min_index = self.scanList.index(min_dist)
 
             # check if shortest distance is on left
             if min_index == 0:
-                # turn right
-                self.stop()
-                self.adjust_turn(0.2)
-                self.set_speed(50)
-                time.sleep(2)
-                self.straight()
-                print("turn right")
+                # turn right since obstacle on left
+                print('closest obstacle is ' + str(left) + ' away on the left')
+                return('right')
 
             # shortest distance on right
             elif min_index == 2:
-                # turn left
-                self.stop()
-                self.adjust_turn(-0.2)
-                self.set_speed(50)
-                print("turn left")
-                time.sleep(2)
-                self.straight()
+                # turn left since obstacle on right
+                print('closest obstacle is ' + str(right) + ' away on the right')
+                return('left')
 
             # shortest distance in middle
             # compare left and right distance
             else:
                 if left > right:
                     # turn right
-                    self.stop()
-                    self.adjust_turn(0.2)
-                    self.set_speed(50)
-                    print("turn right")
-                    time.sleep(2)
-                    self.straight()
+                    print('closest obstacle is ' + str(left) + ' away on the left')
+                    return('right')
+
                 else:
-                    self.stop()
-                    self.adjust_turn(-0.2)
-                    self.set_speed(50)
-                    print("turn left")
-                    time.sleep(2)
-                    self.straight()
-            if max_dist < self.rangeKeep:
-                # reverse robot
-                self.stop()
-                self.set_direction(GPIO.HIGH, GPIO.LOW)
-                self.set_speed(40)
-                time.sleep(3)
-                print("reverse")
-        else:
-            # no obstacle so go forward
-            self.straight()
-            self.set_speed(40)
-            time.sleep(0.5)
-            print("forward")
+                    # turn left
+                    print('closest obstacle is ' + str(right) + ' away on the right')
+                    return('left')
 
     def test_turn(self):
         while (True):
@@ -268,6 +312,20 @@ class Robot:
             self.adjust_turn(0.2)
             self.set_speed(60)
             time.sleep(1.0)
+
+    def test_head(self):
+        print('left head')
+        self.pwm.set_pwm(self.servoPort, 0, self.servoLeft)
+        time.sleep(1)
+        print('middle head')
+        self.pwm.set_pwm(self.servoPort, 0, self.servoMiddle)
+        time.sleep(1)
+        print('right head')
+        self.pwm.set_pwm(self.servoPort, 0, self.servoRight)
+        time.sleep(1)
+        self.pwm.set_pwm(self.servoPort, 0, self.servoMiddle)
+        
+
 
     def run(self):
         # Staighten the wheel and start the motor. Accelerate three times and decelerate once to get to the right speed
@@ -300,10 +358,10 @@ class Robot:
 
 if __name__ == "__main__":
     robot = Robot()
+    #robot.test_head()
     #robot.test(40)
     #robot.stop()
     print('am i running')
     #robot.test_turn()
-    robot.run_obstacle(40)
-    #robot.run()
-    
+    robot.check_obstacle(40)
+    #robot.run() 
