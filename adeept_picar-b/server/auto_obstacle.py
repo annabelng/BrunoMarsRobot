@@ -191,9 +191,9 @@ class Robot:
             self.set_speed(40)
              # straighten to forward direction
             # by turning the opposite direction
-            self.set_turn(0)
+            self.set_turn(-0.2)
             self.set_speed(50)
-            time.sleep(0.5)
+            time.sleep(1.5)
             # straighten again
             self.straight()
             self.set_speed(40)
@@ -212,9 +212,9 @@ class Robot:
             time.sleep(0.2)
             # straighten to forward direction
             # by turning the opposite direction
-            self.set_turn(0.4)
+            self.set_turn(0.6)
             self.set_speed(50)
-            time.sleep(0.5)
+            time.sleep(1.5)
             # straighten again
             self.straight()
             self.set_speed(40)
