@@ -9,7 +9,6 @@ import adafruit_pca9685
 from ultra import *
 from move import *
 import Adafruit_PCA9685
-from led import *
 
 class Robot:
 
@@ -26,12 +25,12 @@ class Robot:
         self.pwm.set_pwm_freq(50)
 
         #green light
-        GPIO.setup(16, GPIO.OUT)
-        GPIO.setup(21, GPIO.OUT)
+        GPIO.setup(23, GPIO.OUT)
+        GPIO.setup(9, GPIO.OUT)
 
         #red light
-        GPIO.setup(15, GPIO.OUT)
-        GPIO.setup(19, GPIO.OUT)
+        GPIO.setup(22, GPIO.OUT)
+        GPIO.setup(10, GPIO.OUT)
 
         # line pin right
         #GPIO.setup(20,GPIO.IN)
@@ -324,7 +323,7 @@ class Robot:
         self.pwm.set_pwm(self.servoPort, 0, self.servoRight)
         time.sleep(1)
         self.pwm.set_pwm(self.servoPort, 0, self.servoMiddle)
-        
+
 
 
     def run(self):
@@ -355,6 +354,40 @@ class Robot:
                 self.straight()
                 self.set_speed(35)
 
+    def red(self):
+        # turning green off
+        GPIO.output(23, GPIO.HIGH)
+        GPIO.output(9, GPIO.HIGH)
+
+        # turning red on
+        GPIO.output(22, GPIO.LOW)
+        GPIO.output(10, GPIO.LOW)
+        print('red on')
+
+    def green(self):
+        # turning red off
+        GPIO.output(22, GPIO.HIGH)
+        GPIO.output(10, GPIO.HIGH)
+
+        # turning green on
+        GPIO.output(23, GPIO.LOW)
+        GPIO.output(9, GPIO.LOW)
+        print('green on')
+
+    def both_off(self):
+        GPIO.output(22, GPIO.HIGH)
+        GPIO.output(10, GPIO.HIGH)
+        GPIO.output(23, GPIO.HIGH)
+        GPIO.output(9, GPIO.HIGH)
+        print('both off')
+
+    def lights(self):
+        for x in range(3):
+            self.red()
+            time.sleep(0.3)
+            self.green()
+            time.sleep(0.3)
+        self.both_off()
 
 if __name__ == "__main__":
     robot = Robot()
@@ -363,5 +396,6 @@ if __name__ == "__main__":
     #robot.stop()
     print('am i running')
     #robot.test_turn()
-    robot.check_obstacle(40)
+    #robot.check_obstacle(40)
     #robot.run() 
+    robot.lights()
