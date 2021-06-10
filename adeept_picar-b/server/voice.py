@@ -111,8 +111,17 @@ if __name__ == "__main__":
         for j in range(RETRY_LIMIT):
             print('Guess {}. Speak!'.format(i+1))
             command = recognize_speech_from_mic(recognizer, microphone)
+            print("You said: {}".format(command["transcription"]))
             #if command["transcription"]:
             #    break
+
+            go_forwards = command["transcription"].lower() == "go forward"
+            go_backwards = command["transcription"].lower() == "go backward"
+            go_left = command["transcription"].lower() == "go left"
+            go_right = command["transcription"].lower() == "go right"
+
+            user_has_more_attempts = i < NUM_COMMANDS - 1
+
             if not command["success"]:
                 break
             print("I didn't catch that. What did you say?\n")
@@ -123,15 +132,15 @@ if __name__ == "__main__":
                 break
 
         # show the user the transcription
-        print("You said: {}".format(command["transcription"]))
+        
 
         # determine if guess is correct and if any attempts remain
-        go_forwards = command["transcription"].lower() == "go forward"
-        go_backwards = command["transcription"].lower() == "go backward"
-        go_left = command["transcription"].lower() == "go left"
-        go_right = command["transcription"].lower() == "go right"
+        #go_forwards = command["transcription"].lower() == "go forward"
+        #go_backwards = command["transcription"].lower() == "go backward"
+        #go_left = command["transcription"].lower() == "go left"
+        #go_right = command["transcription"].lower() == "go right"
 
-        user_has_more_attempts = i < NUM_COMMANDS - 1
+        #user_has_more_attempts = i < NUM_COMMANDS - 1
 
         # determine if the user has won the game
         # if not, repeat the loop if user has more attempts
