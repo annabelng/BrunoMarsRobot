@@ -96,26 +96,31 @@ if __name__ == "__main__":
             print('Guess {}. Speak!'.format(i+1))
             command = recognize_speech_from_mic(recognizer, microphone)
             
-            #if command["transcription"]:
-            #    break
-            if not command["success"]:
+            if command["transcription"]:
                 break
-            print("I didn't catch that. What did you say?\n")
-        # if there was an error, stop the game
-        if command["error"]:
-            print("ERROR: {}".format(command["error"]))
-            break
+            #if not command["success"]:
+            #    break
+            #print("I didn't catch that. What did you say?\n")
+
+            # if there was an error, stop the game
+            if command["error"]:
+                print("ERROR: {}".format(command["error"]))
+                #break
+
         # show the user the transcription
         print("You said: {}".format(command["transcription"]))
+
         # determine if guess is correct and if any attempts remain
-        go_forwards = command["transcription"].lower() == "forward"
-        go_backwards = command["transcription"].lower() == "backwards"
-        go_left = command["transcription"].lower() == "left"
-        go_right = command["transcription"].lower() == "right"
-        user_has_more_attempts = i < NUM_COMMANDS - 1
+        go_forwards = command["transcription"].lower() == "go forward"
+        go_backwards = command["transcription"].lower() == "go backwards"
+        go_left = command["transcription"].lower() == "go left"
+        go_right = command["transcription"].lower() == "go right"
+
+        #user_has_more_attempts = i < NUM_COMMANDS - 1
         # determine if the user has won the game
         # if not, repeat the loop if user has more attempts
         # if no attempts left, the user loses the game
+
         if go_forwards:
             print("Going forwards")
             #scGear.moveAngle(2, 0)
@@ -144,7 +149,7 @@ if __name__ == "__main__":
             #scGear.moveAngle(2, 0)
         if go_right:
             print("Going right")
-            kit.continuous_servo[2].throttle = 0.4
+            kit.continuous_servo[2].throttle = 0
             #scGear.moveAngle(2,-45)
             move.motor_left(1, 0, 50)
             move.motor_right(1, 0, 50)
@@ -154,33 +159,4 @@ if __name__ == "__main__":
         else:
             print("Sorry, not a command")
             break
-""""
-if 'forward' in v_command:
-  print("moving forward")
-  #scGear.moveAngle(2, 0)
-  #move.motor_left(1, 0, speed_set)
-  #move.motor_right(1, 0, speed_set)
-  #time.sleep(2)
-  #move.motorStop()
-elif 'backward' in v_command:
-  print("moving backwards")
-elif 'left' in v_command:
-  print("moving left")
- # scGear.moveAngle(2, 45)
-  #move.motor_left(1, 0, speed_set)
-  #move.motor_right(1, 0, speed_set)
-  #time.sleep(2)
-  #move.motorStop()
-  #scGear.moveAngle(2, 0)
-elif "right" in v_command:
-  print("moving right")
-  #scGear.moveAngle(2,-45)
-  #move.motor_left(1, 0, speed_set)
-  #move.motor_right(1, 0, speed_set)
-  #time.sleep(2)
-  #move.motorStop()
-  #scGear.moveAngle(2, 0)
-elif 'stop' in v_command:
-   #move.motorStop()  else:
-   pass
-"""
+
