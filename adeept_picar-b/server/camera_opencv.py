@@ -103,7 +103,7 @@ class CVThread(threading.Thread):
 
         elif self.CVMode == 'findColor':
             if self.findColorDetection:
-                cv2.putText(imgInput,'Red Detected!',(40,60), CVThread.font, 0.5,(255,255,255),1,cv2.LINE_AA)
+                cv2.putText(imgInput,'Green Detected!',(40,60), CVThread.font, 0.5,(255,255,255),1,cv2.LINE_AA)
                 
                 self.drawing = 1
             else:
